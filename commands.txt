@@ -24,3 +24,5 @@ curl https://localhost:9200/_cat/indices?v -u "admin:Opensearch#01" --insecure
 
 GET CONTENTS OF INDEX named document
 curl -X POST https://localhost:9200/funcfacts/_search -u "admin:Opensearch#01" --insecure --header "Content-Type: application/json" --data "{ \"query\": { \"match_all\": {} }}" > demo.json
+
+curl -X POST https://localhost:9200/files/_search -u "admin:Opensearch#01" --insecure --header "Content-Type: application/json" --data "{ \"query\": { \"match_all\": {} }}" > demo.json
