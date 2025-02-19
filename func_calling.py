@@ -40,7 +40,7 @@ tools = [{
     "function": get_weather_schema
 }]
 
-messages = [{"role": "user", "content": "What's the weather like in Paris today?"}]
+messages = [{"role": "user", "content": "What's the weather like in Paris and Pune today?"}]
 completion = client.chat.completions.create(
     model="gpt-4o-2024-08-06",
     messages=messages,
@@ -50,21 +50,31 @@ messages.append(completion.choices[0].message)  # append model's function call m
 
 #*********Step3: Model decides to call function(s) – model returns the name and input arguments.*********
 # Extract the arguments from the function
-tool_call = completion.choices[0].message.tool_calls[0]
-args = json.loads(tool_call.function.arguments)
-print(tool_call.function.name)
-print(args) 
+# tool_call = completion.choices[0].message.tool_calls[0]
+# args = json.loads(tool_call.function.arguments)
+# print(tool_call.function.name)
+# print(args) 
 
 #********Step 4: Execute function code – parse the model's response and handle function calls.*********
-result = get_weather(args["latitude"], args["longitude"])
+# result = get_weather(args["latitude"], args["longitude"])
 
 #********Step 5: Supply model with results – so it can incorporate them into its final response.*********
 
-messages.append({   # append result message
-    "role": "tool",
-    "tool_call_id": tool_call.id,
-    "content": str(result)
-})
+# messages.append({   # append result message
+#     "role": "tool",
+#     "tool_call_id": tool_call.id,
+#     "content": str(result)
+# })
+
+for tool_call in completion.choices[0].message.tool_calls:
+    args = json.loads(tool_call.function.arguments)
+    result = get_weather(args["latitude"], args["longitude"])
+    messages.append({   # append result message
+        "role": "tool",
+        "tool_call_id": tool_call.id,
+        "content": str(result)
+    })
+
 
 completion_2 = client.chat.completions.create(
     model="gpt-4o-2024-08-06",
