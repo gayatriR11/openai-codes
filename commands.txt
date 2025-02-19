@@ -1,0 +1,26 @@
+Open a new command prompt and send requests to the server to verify that OpenSearch is running. (--insecure flag is required since TLS certificates are self-signed)
+curl.exe -X GET https://localhost:9200 -u "admin:Opensearch#01" --insecure
+
+Query the Plugins endpoint
+curl.exe -X GET https://localhost:9200/_cat/plugins?v -u "admin:Opensearch#01" --insecure
+
+COMMANDS TO WORK WITH INDICES
+GET ALL INDICES
+curl https://localhost:9200/_cat/indices?v -u "admin:Opensearch#01" --insecure
+
+DELETE INDEX named document
+curl -X DELETE https://localhost:9200/documents -u "admin:Opensearch#01" --insecure
+
+GET CONTENTS OF INDEX named document
+curl -X POST https://localhost:9200/documents/_search -u "admin:Opensearch#01" --insecure --header "Content-Type: application/json" --data "{ \"query\": { \"match_all\": {} }}"
+
+OPENSEARCH_HOST=localhost
+OPENSEARCH_PORT=9200
+OPENSEARCH_USERNAME=admin
+OPENSEARCH_PASSWORD=Opensearch#01
+
+GET ALL INDICES
+curl https://localhost:9200/_cat/indices?v -u "admin:Opensearch#01" --insecure
+
+GET CONTENTS OF INDEX named document
+curl -X POST https://localhost:9200/funcfacts/_search -u "admin:Opensearch#01" --insecure --header "Content-Type: application/json" --data "{ \"query\": { \"match_all\": {} }}" > demo.json
